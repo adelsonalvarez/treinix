@@ -25,7 +25,7 @@
 
 O **Treinix** é um aplicativo mobile e web desenvolvido como Projeto de Conclusão de Curso da pós-graduação em Desenvolvimento de Aplicativos Móveis da PUC/PR. O objetivo central é oferecer a atletas amadores — praticantes de corrida, natação, ciclismo e musculação — uma ferramenta digital inteligente para organização, personalização e acompanhamento de treinos.
 
-O diferencial do Treinix está na integração com **Inteligência Artificial** para geração de planos de treino personalizados com base no perfil do atleta: modalidade, nível de condicionamento físico, objetivo e preferências de treino.
+O diferencial do Treinix está na integração com **Inteligência Artificial** (Claude, da Anthropic) para geração de planos de treino personalizados com base no perfil do atleta: modalidade, nível de condicionamento físico, objetivo, intensidade desejada e preferências livres de treino.
 
 ### Motivação
 
@@ -534,7 +534,11 @@ firebase deploy
 
 ## Privacidade e LGPD
 
-O Treinix foi desenvolvido em conformidade com a **Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018)**. Os dados coletados são utilizados exclusivamente para personalizar a experiência de treino do usuário. O armazenamento é realizado no Google Firebase (infraestrutura com certificações de segurança SOC 2 e ISO 27001). O usuário pode solicitar a exclusão de seus dados a qualquer momento.
+O Treinix foi desenvolvido em conformidade com a **Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018)**. Os dados coletados são utilizados exclusivamente para personalizar a experiência de treino do usuário. O armazenamento é realizado no Google Firebase (infraestrutura com certificações de segurança SOC 2 e ISO 27001).
+
+O usuário tem controle total sobre seus dados diretamente pelo aplicativo:
+- **Exclusão de perfil** — pode excluir sua conta e todos os dados associados a qualquer momento
+- **Exportação de dados** — pode exportar seu perfil e histórico de treinos a qualquer momento
 
 A política de privacidade completa está disponível dentro do próprio aplicativo em **Configurações → Política de privacidade**.
 
