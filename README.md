@@ -25,7 +25,7 @@
 
 O **Treinix** é um aplicativo mobile e web desenvolvido como Projeto de Conclusão de Curso da pós-graduação em Desenvolvimento de Aplicativos Móveis da PUC/PR. O objetivo central é oferecer a atletas amadores — praticantes de corrida, natação, ciclismo e musculação — uma ferramenta digital inteligente para organização, personalização e acompanhamento de treinos.
 
-O diferencial do Treinix está na integração com **Inteligência Artificial** (Claude, da Anthropic) para geração de planos de treino personalizados com base no perfil do atleta: modalidade, nível de condicionamento físico, objetivo e preferências de treino.
+O diferencial do Treinix está na integração com **Inteligência Artificial** para geração de planos de treino personalizados com base no perfil do atleta: modalidade, nível de condicionamento físico, objetivo e preferências de treino.
 
 ### Motivação
 
