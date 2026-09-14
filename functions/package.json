@@ -1,0 +1,16 @@
+{
+  "name": "treinix-functions",
+  "description": "Cloud Functions do Treinix – TCC PUC/PR",
+  "author": "Adelson Fernando Alvarez Oliveira",
+  "version": "1.0.0",
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest",
+    "firebase-admin": "latest",
+    "firebase-functions": "latest"
+  },
+  "private": true
+}

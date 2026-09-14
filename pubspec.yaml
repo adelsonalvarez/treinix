@@ -1,0 +1,99 @@
+# =============================================================================
+# Projeto  : Treinix – Treinador Digital para Atletas Amadores
+# Arquivo  : pubspec.yaml
+# Camada   : Configuração do projeto Flutter
+# Descrição: Dependências, assets e metadados do aplicativo
+# -----------------------------------------------------------------------------
+# Autor    : Adelson Fernando Alvarez Oliveira
+# Instituição: Pontifícia Universidade Católica do Paraná – PUC/PR
+# Curso    : Pós-graduação em Desenvolvimento de Aplicativos Móveis
+# Ano      : 2025
+# =============================================================================
+
+name: treinix
+description: Treinix – Treinador digital para atletas amadores (TCC PUC/PR)
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:       # GlobalMaterialLocalizations, pt_BR
+    sdk: flutter
+
+  # Firebase — versões que usam firebase_core_platform_interface ^6.x (Pigeon v25)
+  # compatíveis com o código Android gerado em GeneratedAndroidFirebaseCore.java
+  firebase_core: ^3.15.2
+  firebase_auth: ^5.7.0
+  cloud_firestore: ^5.6.12
+  cloud_functions: ^5.6.2
+
+  # Estado
+  provider: ^6.1.2
+
+  # Navegação
+  go_router: ^14.2.7
+
+  # UI
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10+1
+
+  # Utilitários
+  intl: ^0.20.2
+  shared_preferences: ^2.3.2
+  uuid: ^4.5.1
+  equatable: ^2.0.5
+  web: ^1.1.1
+  flutter_native_splash: ^2.4.3
+
+dependency_overrides:
+  # path_provider_android 2.3.x introduziu JNI que quebra o canal do Firebase.
+  # Manter 2.2.x que usa platform channels tradicionais sem JNI.
+  path_provider_android: '>=2.0.0 <2.3.0'
+  # firebase_core_platform_interface 6.x usa Pigeon v25 (mesmos nomes de canal
+  # que o código Android gerado em firebase_core 3.15.2+).
+  # Sem este override, pub pode resolver 5.x que usa Pigeon v9 (nomes distintos)
+  # → channel-error ao inicializar Firebase no Android.
+  firebase_core_platform_interface: ^6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+
+flutter_native_splash:
+  color: "#E8593C"
+  image: assets/images/logo.png
+  color_dark: "#C44227"
+  image_dark: assets/images/logo.png
+  android_12:
+    image: assets/images/logo.png
+    icon_background_color: "#E8593C"
+    image_dark: assets/images/logo.png
+    icon_background_color_dark: "#C44227"
+  web: false
+
+flutter_launcher_icons:
+  image_path: "assets/images/logo.png"
+  background_color: "#E8593C"
+
+  android: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#E8593C"
+  adaptive_icon_foreground: "assets/images/logo.png"
+
+  web:
+    generate: true
+    image_path: "assets/images/logo.png"
+    background_color: "#E8593C"
+    theme_color: "#E8593C"

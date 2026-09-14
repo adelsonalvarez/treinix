@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Perfil do usuário — só o próprio usuário acessa
+    match /users/{userId} {
+      allow read, write: if request.auth != null
+        && request.auth.uid == userId;
+
+      // Treinos registrados
+      match /trainings/{trainingId} {
+        allow read, write: if request.auth != null
+          && request.auth.uid == userId;
+      }
+
+      // Sugestões geradas pela IA
+      match /suggestions/{suggestionId} {
+        allow read, write: if request.auth != null
+          && request.auth.uid == userId;
+      }
+
+      // Planos de treino gerados pela IA
+      match /plans/{planId} {
+        allow read, write: if request.auth != null
+          && request.auth.uid == userId;
+      }
+    }
+  }
+}
