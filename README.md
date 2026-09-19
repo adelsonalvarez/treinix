@@ -185,7 +185,8 @@ Permite que usuários cadastrados com e-mail e senha redefinam o acesso em caso 
 - Botão "Voltar ao login"
 
 <div align="center">
-  <img src="assets/screenshots/04_recuperar_senha.png" width="280" alt="Recuperação de Senha">
+  <img src="assets/screenshots/04_recuperar_senha_1.png" width="300" alt="Recuperação de Senha — Formulário">
+  <img src="assets/screenshots/04_recuperar_senha_2.png" width="300" alt="Recuperação de Senha — Confirmação">
 </div>
 
 ---
