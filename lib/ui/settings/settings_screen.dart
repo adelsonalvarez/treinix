@@ -155,7 +155,7 @@ class SettingsScreen extends StatelessWidget {
     }
   }
 
-  // ── Excluir conta (2 passos) ────────────────────────────────────────────────
+  // ── Excluir conta ───────────────────────────────────────────────────────────
 
   Future<void> _deleteAccount(BuildContext context, AuthViewModel auth) async {
     // Passo 1 — aviso sobre irreversibilidade
@@ -188,7 +188,32 @@ class SettingsScreen extends StatelessWidget {
     );
     if (proceed != true || !context.mounted) return;
 
-    // Passo 2 — confirmação com senha (re-autenticação Firebase)
+    // Passo 2 — Google: reauth pelo popup (sem pedir senha)
+    //           E-mail: pede senha antes de mostrar loader
+    if (auth.isGoogleUser) {
+      await _deleteWithGoogle(context, auth);
+    } else {
+      await _deleteWithPassword(context, auth);
+    }
+  }
+
+  // Re-autenticação Google + exclusão — sem dialog de senha
+  Future<void> _deleteWithGoogle(
+      BuildContext context, AuthViewModel auth) async {
+    // O deleteAccount() abre o popup do Google internamente; exibe loader após retorno.
+    final success = await auth.deleteAccount();
+    // Sucesso: o GoRouter redireciona para /login automaticamente via auth state.
+    if (!success && context.mounted && auth.status == AuthStatus.error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:         Text(auth.errorMessage ?? 'Erro ao excluir conta.'),
+        backgroundColor: AppColors.error,
+      ));
+    }
+  }
+
+  // Pede senha, exibe loader e exclui conta e-mail/senha
+  Future<void> _deleteWithPassword(
+      BuildContext context, AuthViewModel auth) async {
     final passCtrl = TextEditingController();
     bool  obscure  = true;
 
@@ -202,7 +227,7 @@ class SettingsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Por segurança, confirme sua senha para apagar a conta:'),
+                  'Por segurança, confirme sua senha para apagar a conta:'),
               const SizedBox(height: 16),
               TextField(
                 controller:  passCtrl,
@@ -246,33 +271,33 @@ class SettingsScreen extends StatelessWidget {
       return;
     }
 
-    // Loading enquanto apaga
-    if (context.mounted) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => const AlertDialog(
+    // Loader — captura o BuildContext do próprio dialog para fechá-lo com segurança
+    BuildContext? loaderCtx;
+    showDialog(
+      context:          context,
+      barrierDismissible: false,
+      builder: (ctx) {
+        loaderCtx = ctx;
+        return const AlertDialog(
           content: Row(children: [
             CircularProgressIndicator(),
             SizedBox(width: 20),
             Text('Apagando seus dados…'),
           ]),
-        ),
-      );
-    }
+        );
+      },
+    );
 
     final success = await auth.deleteAccount(password: password);
 
-    if (!context.mounted) return;
-    Navigator.of(context, rootNavigator: true).pop(); // fecha loader
+    // Fecha o loader pelo contexto do próprio dialog (evita pop de rota errada)
+    if (loaderCtx != null && loaderCtx!.mounted) {
+      Navigator.of(loaderCtx!).pop();
+    }
 
-    if (success) {
-      context.go('/login');
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content:         Text('Conta excluída com sucesso.'),
-        backgroundColor: AppColors.success,
-      ));
-    } else {
+    // Sucesso: GoRouter redireciona automaticamente para /login via auth state.
+    // Erro: exibe snackbar (context pode estar desmontado se o router já navegou).
+    if (!success && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content:         Text(auth.errorMessage ?? 'Erro ao excluir conta.'),
         backgroundColor: AppColors.error,

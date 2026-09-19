@@ -124,7 +124,9 @@ App (Flutter)
 
 Tela de inicialização nativa exibida durante o carregamento do Firebase e das configurações iniciais. Fundo laranja (#E8593C) com o logo do Treinix centralizado. Implementada com o pacote `flutter_native_splash` para integração com o sistema operacional (Android e iOS), garantindo uma transição suave entre o boot nativo e o primeiro frame Flutter.
 
-> 📸 _[inserir print da splash screen]_
+<div align="center">
+  <img src="assets/screenshots/01_splash.png" width="280" alt="Splash Screen">
+</div>
 
 ---
 
@@ -143,7 +145,9 @@ Primeira tela exibida ao usuário não autenticado. Apresenta o logo do Treinix 
 - Link "Esqueci minha senha"
 - Link "Criar conta"
 
-> 📸 _[inserir print da tela de login]_
+<div align="center">
+  <img src="assets/screenshots/02_login.png" width="280" alt="Tela de Login">
+</div>
 
 ---
 
@@ -162,7 +166,9 @@ Formulário de criação de conta com campos de nome, e-mail, senha e confirmaç
 - Botão "Criar conta"
 - Link "Já tenho conta"
 
-> 📸 _[inserir print da tela de cadastro]_
+<div align="center">
+  <img src="assets/screenshots/03_cadastro.png" width="280" alt="Tela de Cadastro">
+</div>
 
 ---
 
@@ -178,7 +184,9 @@ Permite que usuários cadastrados com e-mail e senha redefinam o acesso em caso 
 - Tela de confirmação com ícone de sucesso
 - Botão "Voltar ao login"
 
-> 📸 _[inserir print da tela de recuperação de senha]_
+<div align="center">
+  <img src="assets/screenshots/04_recuperar_senha.png" width="280" alt="Recuperação de Senha">
+</div>
 
 ---
 
@@ -195,7 +203,12 @@ Fluxo exibido uma única vez após o primeiro cadastro. Composto por 4 etapas co
 
 Os dados são salvos no Firestore e utilizados como contexto na geração dos planos de treino por IA.
 
-> 📸 _[inserir prints das 4 etapas do onboarding]_
+<div align="center">
+  <img src="assets/screenshots/05_onboarding_1.png" width="200" alt="Onboarding — Modalidades">
+  <img src="assets/screenshots/05_onboarding_2.png" width="200" alt="Onboarding — Nível">
+  <img src="assets/screenshots/05_onboarding_3.png" width="200" alt="Onboarding — Objetivo">
+  <img src="assets/screenshots/05_onboarding_4.png" width="200" alt="Onboarding — Idade">
+</div>
 
 ---
 
@@ -210,7 +223,10 @@ Tela principal do aplicativo. Exibe um resumo completo da semana do atleta em te
 - **Próximo treino** — Card com o próximo treino agendado por modalidade (modalidade, tipo de sessão, duração estimada)
 - **Últimos treinos** — Lista dos treinos mais recentes com data, modalidade e duração
 
-> 📸 _[inserir print da tela home]_
+<div align="center">
+  <img src="assets/screenshots/06_home_1.png" width="300" alt="Home — Dashboard">
+  <img src="assets/screenshots/06_home_2.png" width="300" alt="Home — Próximo Treino">
+</div>
 
 ---
 
@@ -230,7 +246,11 @@ Tela central do diferencial do Treinix. O usuário configura os parâmetros do p
 
 Após a geração, o plano ativo é exibido com progresso (ex.: "Sessão 2 de 4"), rotação automática de sessões A→B→C→D ao concluir cada treino e animação de personagem com a modalidade escolhida.
 
-> 📸 _[inserir print da tela de configuração + print do plano gerado]_
+<div align="center">
+  <img src="assets/screenshots/07_ia_configuracao.png" width="220" alt="IA — Configuração">
+  <img src="assets/screenshots/07_ia_gerando_plano.png" width="220" alt="IA — Gerando Plano">
+  <img src="assets/screenshots/07_ia_plano_gerado.png" width="220" alt="IA — Plano Gerado">
+</div>
 
 ---
 
@@ -246,7 +266,9 @@ Exibe os detalhes da próxima sessão do plano ativo. O usuário pode visualizar
 - Botão "Iniciar treino" → direciona para o player de execução
 - Botão "Concluí o treino" → registra no histórico
 
-> 📸 _[inserir print da tela de sessão de treino]_
+<div align="center">
+  <img src="assets/screenshots/08_sessao_treino.png" width="280" alt="Sessão de Treino">
+</div>
 
 ---
 
@@ -265,7 +287,10 @@ Player passo a passo para execução guiada do treino. O atleta desliza entre os
 - Descrição de cada bloco (aquecimento, principal, descanso, volta à calma)
 - Confirmação manual de conclusão por bloco
 
-> 📸 _[inserir print do workout player — modo musculação e modo endurance]_
+<div align="center">
+  <img src="assets/screenshots/09_workout_player_1.png" width="300" alt="Workout Player — Musculação">
+  <img src="assets/screenshots/09_workout_player_2.png" width="300" alt="Workout Player — Endurance">
+</div>
 
 ---
 
@@ -275,7 +300,13 @@ Player passo a passo para execução guiada do treino. O atleta desliza entre os
 
 Visão expandida de um plano de treino completo. Lista todas as sessões geradas pela IA com seus respectivos blocos, exercícios e descrições. Útil para revisão prévia de todo o plano antes de iniciar.
 
-> 📸 _[inserir print dos detalhes do plano]_
+<div align="center">
+  <img src="assets/screenshots/10_plano_detalhes_1.png" width="190" alt="Plano — Detalhe 1">
+  <img src="assets/screenshots/10_plano_detalhes_2.png" width="190" alt="Plano — Detalhe 2">
+  <img src="assets/screenshots/10_plano_detalhes_3.png" width="190" alt="Plano — Detalhe 3">
+  <img src="assets/screenshots/10_plano_detalhes_4.png" width="190" alt="Plano — Detalhe 4">
+  <img src="assets/screenshots/10_plano_detalhes_5.png" width="190" alt="Plano — Detalhe 5">
+</div>
 
 ---
 
@@ -291,7 +322,13 @@ Permite o lançamento manual de um treino avulso, sem necessidade de plano gerad
 - Campo de observações
 - Botão "Registrar treino"
 
-> 📸 _[inserir print da tela de registro manual]_
+<div align="center">
+  <img src="assets/screenshots/11_registro_manual_1.png" width="190" alt="Registro Manual 1">
+  <img src="assets/screenshots/11_registro_manual_2.png" width="190" alt="Registro Manual 2">
+  <img src="assets/screenshots/11_registro_manual_3.png" width="190" alt="Registro Manual 3">
+  <img src="assets/screenshots/11_registro_manual_4.png" width="190" alt="Registro Manual 4">
+  <img src="assets/screenshots/11_registro_manual_5.png" width="190" alt="Registro Manual 5">
+</div>
 
 ---
 
@@ -301,7 +338,9 @@ Permite o lançamento manual de um treino avulso, sem necessidade de plano gerad
 
 Lista cronológica de todos os treinos realizados pelo atleta — sejam planos concluídos ou registros manuais. Cada item exibe modalidade, data, duração e tipo de treino.
 
-> 📸 _[inserir print do histórico de treinos]_
+<div align="center">
+  <img src="assets/screenshots/12_historico.png" width="280" alt="Histórico de Treinos">
+</div>
 
 ---
 
@@ -311,7 +350,9 @@ Lista cronológica de todos os treinos realizados pelo atleta — sejam planos c
 
 Detalhe de um treino específico do histórico. Exibe todas as informações registradas: data, duração, modalidade, blocos executados e observações.
 
-> 📸 _[inserir print do log detalhado]_
+<div align="center">
+  <img src="assets/screenshots/13_log_detalhe.png" width="280" alt="Log Detalhado de Treino">
+</div>
 
 ---
 
@@ -326,7 +367,9 @@ Dashboard de acompanhamento de progresso com visualizações gráficas baseadas 
 - **Distribuição por modalidade** — Percentual de treinos por modalidade praticada
 - **Consistência** — Indicador de semanas ativas com streak de semanas consecutivas
 
-> 📸 _[inserir print da tela de estatísticas]_
+<div align="center">
+  <img src="assets/screenshots/14_estatisticas.png" width="280" alt="Estatísticas">
+</div>
 
 ---
 
@@ -343,7 +386,9 @@ Tela de perfil do usuário com visualização e edição dos dados cadastrais e 
 - Nível de condicionamento
 - Objetivo esportivo
 
-> 📸 _[inserir print da tela de perfil]_
+<div align="center">
+  <img src="assets/screenshots/15_perfil.png" width="280" alt="Perfil do Atleta">
+</div>
 
 ---
 
@@ -358,7 +403,9 @@ Central de configurações do aplicativo.
 - Sobre o Treinix
 - Encerrar sessão (com confirmação por diálogo)
 
-> 📸 _[inserir print das configurações]_
+<div align="center">
+  <img src="assets/screenshots/16_configuracoes.png" width="280" alt="Configurações">
+</div>
 
 ---
 
@@ -377,7 +424,9 @@ Ferramenta utilitária para atletas de corrida, natação e ciclismo calcularem 
 - Natação (metros e min/100m)
 - Ciclismo (km/h e min/km)
 
-> 📸 _[inserir print da calculadora de pace]_
+<div align="center">
+  <img src="assets/screenshots/17_calculadora_pace.png" width="280" alt="Calculadora de Pace">
+</div>
 
 ---
 
@@ -393,7 +442,9 @@ Dicionário de termos técnicos do esporte com filtro por modalidade. Útil para
 - Ciclismo
 - Musculação
 
-> 📸 _[inserir print do glossário]_
+<div align="center">
+  <img src="assets/screenshots/18_glossario.png" width="280" alt="Glossário Esportivo">
+</div>
 
 ---
 
@@ -411,7 +462,9 @@ Tela informativa com o propósito do aplicativo, contexto acadêmico, tecnologia
 - O que o Treinix oferece
 - Privacidade e LGPD
 
-> 📸 _[inserir print da tela sobre]_
+<div align="center">
+  <img src="assets/screenshots/19_sobre.png" width="280" alt="Sobre o Treinix">
+</div>
 
 ---
 
@@ -421,7 +474,9 @@ Tela informativa com o propósito do aplicativo, contexto acadêmico, tecnologia
 
 Documento completo de política de privacidade em conformidade com a **Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018)**. Detalha quais dados são coletados, como são utilizados, por quanto tempo são armazenados e os direitos do titular.
 
-> 📸 _[inserir print da política de privacidade]_
+<div align="center">
+  <img src="assets/screenshots/20_privacidade.png" width="280" alt="Política de Privacidade">
+</div>
 
 ---
 

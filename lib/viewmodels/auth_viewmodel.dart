@@ -13,6 +13,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../data/models/user_model.dart';
 
 enum AuthStatus { idle, loading, success, error }
@@ -29,6 +30,9 @@ class AuthViewModel extends ChangeNotifier {
   String?    get errorMessage  => _errorMessage;
   UserModel? get currentUser   => _currentUser;
   bool       get isLoggedIn    => _auth.currentUser != null;
+  bool       get isGoogleUser  =>
+      _auth.currentUser?.providerData
+          .any((p) => p.providerId == 'google.com') ?? false;
   bool       get isLoading     => _status == AuthStatus.loading;
 
   AuthViewModel() {
@@ -100,23 +104,39 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  /// Autentica via Google. Web: popup nativo. Mobile: não suportado (retorna erro).
-  /// null + status==idle → usuário cancelou o popup (sem mensagem de erro)
+  /// Autentica via Google.
+  /// Web: popup nativo do Firebase. Android: fluxo nativo via google_sign_in.
+  /// null + status==idle → usuário cancelou (sem mensagem de erro)
   /// null + status==error → erro real
   Future<String?> signInWithGoogle() async {
-    if (!kIsWeb) {
-      _errorMessage = 'Login com Google disponível apenas na versão web.';
-      _setStatus(AuthStatus.error);
-      return null;
-    }
     _setStatus(AuthStatus.loading);
     try {
-      final cred = await _auth.signInWithPopup(GoogleAuthProvider());
-      final user = cred.user!;
+      UserCredential cred;
 
-      final doc = await _db.collection('users').doc(user.uid).get();
+      if (kIsWeb) {
+        cred = await _auth.signInWithPopup(GoogleAuthProvider());
+      } else {
+        // Android: fluxo nativo via google_sign_in + credencial Firebase
+        final googleSignIn  = GoogleSignIn();
+        final googleUser    = await googleSignIn.signIn();
+        if (googleUser == null) {
+          // Usuário cancelou — não é um erro, não mostra mensagem
+          _setStatus(AuthStatus.idle);
+          return null;
+        }
+        final googleAuth = await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken:     googleAuth.idToken,
+        );
+        cred = await _auth.signInWithCredential(credential);
+      }
+
+      final user = cred.user!;
+      final doc  = await _db.collection('users').doc(user.uid).get();
+
       if (!doc.exists) {
-        // Novo usuário — cria documento e vai para onboarding
+        // Novo usuário — cria documento e encaminha para onboarding
         final now = DateTime.now();
         final model = UserModel(
           uid:            user.uid,
@@ -127,7 +147,7 @@ class AuthViewModel extends ChangeNotifier {
           goal:           Goal.resistencia,
           onboardingDone: false,
           createdAt:      now,
-          consentGiven:   true,   // OAuth implica aceite dos termos
+          consentGiven:   true,
           consentDate:    now,
         );
         await _db.collection('users').doc(user.uid).set(model.toFirestore());
@@ -140,7 +160,6 @@ class AuthViewModel extends ChangeNotifier {
       return _currentUser!.onboardingDone ? '/home' : '/onboarding';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'popup-closed-by-user') {
-        // Usuário fechou o popup — não é um erro, não mostra mensagem
         _setStatus(AuthStatus.idle);
         return null;
       }
@@ -194,10 +213,11 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   /// Exclui permanentemente a conta e todos os dados do usuário no Firestore.
-  /// Exige re-autenticação com senha para operações sensíveis (Firebase policy).
-  Future<bool> deleteAccount({required String password}) async {
+  /// Re-autenticação automática: Google para contas OAuth, senha para e-mail/senha.
+  /// [password] obrigatório apenas para contas e-mail/senha; ignorado para Google.
+  Future<bool> deleteAccount({String? password}) async {
     final user = _auth.currentUser;
-    if (user == null || user.email == null) {
+    if (user == null) {
       _errorMessage = 'Usuário não encontrado.';
       _setStatus(AuthStatus.error);
       return false;
@@ -205,12 +225,36 @@ class AuthViewModel extends ChangeNotifier {
 
     _setStatus(AuthStatus.loading);
     try {
-      // Re-autentica para garantir sessão recente (requisito do Firebase).
-      final credential = EmailAuthProvider.credential(
-        email:    user.email!,
-        password: password,
-      );
-      await user.reauthenticateWithCredential(credential);
+      final providers = user.providerData.map((p) => p.providerId).toList();
+
+      if (providers.contains('google.com')) {
+        // Re-autenticação via Google (mesmo fluxo do login)
+        final googleSignIn = GoogleSignIn();
+        final googleUser   = await googleSignIn.signIn();
+        if (googleUser == null) {
+          // Usuário cancelou — não é um erro
+          _setStatus(AuthStatus.idle);
+          return false;
+        }
+        final googleAuth = await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken:     googleAuth.idToken,
+        );
+        await user.reauthenticateWithCredential(credential);
+      } else {
+        // Re-autenticação via e-mail + senha
+        if (password == null || password.isEmpty || user.email == null) {
+          _errorMessage = 'Senha não pode estar vazia.';
+          _setStatus(AuthStatus.error);
+          return false;
+        }
+        final credential = EmailAuthProvider.credential(
+          email:    user.email!,
+          password: password,
+        );
+        await user.reauthenticateWithCredential(credential);
+      }
 
       // Apaga todos os dados do Firestore antes de remover a conta Auth.
       await _deleteAllUserData(user.uid);
@@ -219,7 +263,7 @@ class AuthViewModel extends ChangeNotifier {
       await user.delete();
 
       _currentUser = null;
-      notifyListeners();
+      _setStatus(AuthStatus.idle);
       return true;
     } on FirebaseAuthException catch (e) {
       _errorMessage = switch (e.code) {

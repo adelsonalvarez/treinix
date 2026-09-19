@@ -84,10 +84,15 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final vm = context.watch<AuthViewModel>();
 
+    final screenH  = MediaQuery.of(context).size.height;
+    final isSmall  = screenH < 680;
+    final logoSize = isSmall ? 72.0 : 110.0;
+    final vPad     = isSmall ? 10.0 : 20.0;
+    final gap1     = isSmall ?  8.0 : 14.0;
+    final gap2     = isSmall ?  2.0 :  6.0;
+    final titleSz  = isSmall ? 24.0 : 28.0;
+
     return Scaffold(
-      // Container raiz cobre a tela inteira com o gradiente azul da logo.
-      // Não há percentuais fixos de altura — o hero se dimensiona pelo
-      // conteúdo e o card ocupa o restante via Expanded.
       body: Container(
         decoration: const BoxDecoration(gradient: _kHeroGradient),
         child: SafeArea(
@@ -96,23 +101,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // ── Hero: logo + marca + tagline ──────────────────────────
               Padding(
-                padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
+                padding: EdgeInsets.fromLTRB(24, vPad, 24, vPad),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
                       'assets/images/logo.png',
-                      width:  120,
-                      height: 120,
+                      width:  logoSize,
+                      height: logoSize,
                       errorBuilder: (_, __, ___) => Container(
-                        width: 120, height: 120,
+                        width: logoSize, height: logoSize,
                         decoration: BoxDecoration(
                           color:  Colors.white.withAlpha(30),
                           shape:  BoxShape.circle,
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text('T', style: TextStyle(
-                            fontSize:   52,
+                            fontSize:   logoSize * 0.43,
                             fontWeight: FontWeight.w800,
                             color:      Colors.white,
                           )),
@@ -120,19 +125,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 14),
+                    SizedBox(height: gap1),
 
-                    const Text(
+                    Text(
                       'TREINIX',
                       style: TextStyle(
-                        fontSize:      28,
+                        fontSize:      titleSz,
                         fontWeight:    FontWeight.w800,
                         color:         Colors.white,
                         letterSpacing: 5,
                       ),
                     ),
 
-                    const SizedBox(height: 6),
+                    SizedBox(height: gap2),
 
                     Text(
                       'Treine com inteligência. Evolua todo dia.',

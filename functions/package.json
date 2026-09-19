@@ -8,7 +8,7 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@anthropic-ai/sdk": "latest",
+    "@anthropic-ai/sdk": "^0.127.0",
     "firebase-admin": "latest",
     "firebase-functions": "latest"
   },

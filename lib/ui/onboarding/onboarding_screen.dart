@@ -278,50 +278,56 @@ class _StepGoal extends StatelessWidget {
       (Goal.desempenho,    '🏆', 'Desempenho',    'Melhorar resultado em provas e competições'),
     ];
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('Qual é seu\nobjetivo principal?', style: AppTextStyles.heading2),
-          const SizedBox(height: 32),
-          ...goals.map((g) {
-            final (goal, emoji, label, sub) = g;
-            final sel = selected == goal;
-            return GestureDetector(
-              onTap: () => onSelect(goal),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: sel ? AppColors.primaryLight : AppColors.surface,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: sel ? AppColors.primary : AppColors.border,
-                    width: sel ? 2 : 1,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Text(emoji, style: const TextStyle(fontSize: 28)),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+          const SizedBox(height: 24),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: goals.map((g) {
+                  final (goal, emoji, label, sub) = g;
+                  final sel = selected == goal;
+                  return GestureDetector(
+                    onTap: () => onSelect(goal),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: sel ? AppColors.primaryLight : AppColors.surface,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: sel ? AppColors.primary : AppColors.border,
+                          width: sel ? 2 : 1,
+                        ),
+                      ),
+                      child: Row(
                         children: [
-                          Text(label, style: AppTextStyles.bodyMedium.copyWith(
-                            color: sel ? AppColors.primary : AppColors.textPrimary,
-                          )),
-                          Text(sub, style: AppTextStyles.bodySm),
+                          Text(emoji, style: const TextStyle(fontSize: 28)),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(label, style: AppTextStyles.bodyMedium.copyWith(
+                                  color: sel ? AppColors.primary : AppColors.textPrimary,
+                                )),
+                                Text(sub, style: AppTextStyles.bodySm),
+                              ],
+                            ),
+                          ),
+                          if (sel) const Icon(Icons.check_circle, color: AppColors.primary),
                         ],
                       ),
                     ),
-                    if (sel) const Icon(Icons.check_circle, color: AppColors.primary),
-                  ],
-                ),
+                  );
+                }).toList(),
               ),
-            );
-          }),
+            ),
+          ),
         ],
       ),
     );
@@ -362,7 +368,7 @@ class _StepAgeState extends State<_StepAge> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,7 +379,7 @@ class _StepAgeState extends State<_StepAge> {
             'Ajuda a IA a calibrar intensidade e volume de recuperação.',
             style: AppTextStyles.bodySm,
           ),
-          const SizedBox(height: 48),
+          const SizedBox(height: 32),
           Center(
             child: SizedBox(
               width: 140,
@@ -414,7 +420,7 @@ class _StepAgeState extends State<_StepAge> {
           ),
           const SizedBox(height: 8),
           const Center(child: Text('anos', style: AppTextStyles.bodySm)),
-          const Spacer(),
+          const SizedBox(height: 32),
           Center(
             child: TextButton(
               onPressed: () {

@@ -19,6 +19,8 @@ import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'firebase_options.dart';
+import 'package:go_router/go_router.dart';
+
 import 'core/routes/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'viewmodels/auth_viewmodel.dart';
@@ -63,14 +65,36 @@ void main() async {
   runApp(const TreinixApp());
 }
 
-class TreinixApp extends StatelessWidget {
+class TreinixApp extends StatefulWidget {
   const TreinixApp({super.key});
+
+  @override
+  State<TreinixApp> createState() => _TreinixAppState();
+}
+
+class _TreinixAppState extends State<TreinixApp> {
+  // AuthViewModel criado antes do router para ser passado ao refreshListenable.
+  late final AuthViewModel _authViewModel;
+  late final GoRouter      _router;
+
+  @override
+  void initState() {
+    super.initState();
+    _authViewModel = AuthViewModel();
+    _router        = AppRouter.createRouter(_authViewModel);
+  }
+
+  @override
+  void dispose() {
+    _authViewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider.value(value: _authViewModel),
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => TrainingViewModel()),
@@ -90,7 +114,7 @@ class TreinixApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        routerConfig: AppRouter.router,
+        routerConfig: _router,
       ),
     );
   }

@@ -306,7 +306,8 @@ exports.generateTrainingSuggestion = onCall(
           focus, intensity, freeText, durationMinutes,
         });
 
-    const client = new Anthropic.default({ apiKey: claudeApiKey.value() });
+    const apiKey = claudeApiKey.value().replace(/^﻿/, "");
+    const client = new Anthropic.default({ apiKey });
 
     let rawText = "";
     try {

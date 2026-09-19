@@ -139,6 +139,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final vm  = context.watch<AuthViewModel>();
     final pwd = _passCtrl.text;
 
+    final screenH  = MediaQuery.of(context).size.height;
+    final isSmall  = screenH < 680;
+    final logoSize = isSmall ? 60.0 : 80.0;
+    final vPad     = isSmall ?  4.0 :  8.0;
+    final gap1     = isSmall ?  6.0 : 10.0;
+    final titleSz  = isSmall ? 22.0 : 26.0;
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(gradient: _kHeroGradient),
@@ -148,19 +155,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
               // ── Hero compacto: voltar + logo + marca ──────────────────
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 24, 12),
+                padding: EdgeInsets.fromLTRB(8, vPad, 24, vPad),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
 
-                    // Botão voltar alinhado à esquerda
                     Align(
                       alignment: Alignment.centerLeft,
                       child: IconButton(
                         icon: const Icon(
                           Icons.arrow_back_ios_new,
-                          color:  Colors.white,
-                          size:   20,
+                          color: Colors.white,
+                          size:  20,
                         ),
                         onPressed: () => context.go('/login'),
                       ),
@@ -168,17 +174,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     Image.asset(
                       'assets/images/logo.png',
-                      width:  90,
-                      height: 90,
+                      width:  logoSize,
+                      height: logoSize,
                       errorBuilder: (_, __, ___) => Container(
-                        width: 90, height: 90,
+                        width: logoSize, height: logoSize,
                         decoration: BoxDecoration(
                           color: Colors.white.withAlpha(30),
                           shape: BoxShape.circle,
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text('T', style: TextStyle(
-                            fontSize:   40,
+                            fontSize:   logoSize * 0.44,
                             fontWeight: FontWeight.w800,
                             color:      Colors.white,
                           )),
@@ -186,12 +192,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    SizedBox(height: gap1),
 
-                    const Text(
+                    Text(
                       'TREINIX',
                       style: TextStyle(
-                        fontSize:      26,
+                        fontSize:      titleSz,
                         fontWeight:    FontWeight.w800,
                         color:         Colors.white,
                         letterSpacing: 5,

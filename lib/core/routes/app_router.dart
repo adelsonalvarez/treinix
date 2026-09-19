@@ -62,12 +62,16 @@ class _AuthRefresh extends ChangeNotifier {
 }
 
 class AppRouter {
-  static final _rootKey    = GlobalKey<NavigatorState>();
+  static final _rootKey     = GlobalKey<NavigatorState>();
   static final _authRefresh = _AuthRefresh();
 
-  static final router = GoRouter(
+  /// Cria o router com acesso ao AuthViewModel para que mudanças no perfil
+  /// (ex.: conclusão do carregamento do Firestore) também disparem o redirect.
+  static GoRouter createRouter(AuthViewModel authViewModel) => GoRouter(
     navigatorKey:      _rootKey,
-    refreshListenable: _authRefresh,
+    // Merge: dispara redirect tanto na mudança de auth (Firebase) quanto
+    // quando o user model termina de carregar no AuthViewModel.
+    refreshListenable: Listenable.merge([_authRefresh, authViewModel]),
     initialLocation: '/login',
     redirect: (context, state) {
       final auth     = context.read<AuthViewModel>();
@@ -78,7 +82,12 @@ class AppRouter {
       final onPublic = loc == '/privacy';
 
       if (!loggedIn && !onAuth && !onPublic) return '/login';
-      if (loggedIn && onAuth) return '/home';
+      if (loggedIn && onAuth) {
+        final user = auth.currentUser;
+        // user == null: model ainda carregando — aguarda próximo notify
+        if (user == null) return null;
+        return user.onboardingDone ? '/home' : '/onboarding';
+      }
       return null;
     },
     routes: [
