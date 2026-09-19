@@ -235,15 +235,23 @@ Tela principal do aplicativo. Exibe um resumo completo da semana do atleta em te
 
 **Arquivo:** `lib/ui/suggestion/suggestion_screen.dart`
 
-Tela central do diferencial do Treinix. O usuário configura os parâmetros do plano e a IA (Claude) gera um plano estruturado com múltiplas sessões de treino.
+Tela central do diferencial do Treinix. O fluxo de geração é composto por três etapas distintas:
 
-**Parâmetros configuráveis:**
+**1 — Configuração do plano**
+
+O usuário define os parâmetros antes de acionar a geração:
 - Modalidade (Corrida, Natação, Ciclismo, Musculação)
 - Foco do treino (Resistência, Força, Velocidade, Técnica, Recuperação)
 - Intensidade desejada (Leve, Moderado, Intenso)
 - Duração da sessão (em minutos)
 - Número de sessões no plano
 - Diretrizes livres (campo de texto aberto para instruções específicas)
+
+**2 — Tela de espera (geração em andamento)**
+
+Enquanto a Cloud Function processa a requisição ao Claude AI, o aplicativo exibe uma tela de aguardo com animação, informando ao usuário que o plano está sendo criado. A geração leva alguns segundos dependendo do tamanho do plano.
+
+**3 — Plano gerado**
 
 Após a geração, o plano ativo é exibido com progresso (ex.: "Sessão 2 de 4"), rotação automática de sessões A→B→C→D ao concluir cada treino e animação de personagem com a modalidade escolhida.
 
